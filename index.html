@@ -1,335 +1,255 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Тест по Дизайну</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      padding: 20px;
-      max-width: 700px;
-      margin: auto;
-      transition: background 0.5s;
-      position: relative;
-    }
-    .question {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      animation: fadeIn 0.5s;
-    }
-    button {
-      display: block;
-      background: #ddd;
-      border: none;
-      padding: 12px 20px;
-      margin: 10px 0;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s, transform 0.2s;
-    }
-    button:hover {
-      background: #ccc;
-    }
-    button.correct {
-      background: #4CAF50 !important;
-      color: white;
-      animation: pulse 1s infinite;
-    }
-    button.wrong {
-      background: #f44336 !important;
-      color: white;
-      animation: shake 0.5s;
-    }
-    #timer {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 10px;
-      text-align: center;
-    }
-    #result {
-      text-align: center;
-      font-size: 24px;
-      margin-top: 30px;
-      color: #333;
-      animation: fadeIn 1s;
-    }
-    #progress {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 10;
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-      70% { box-shadow: 0 0 10px 20px rgba(76, 175, 80, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-    }
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
-    }
-    @keyframes blink {
-      0%, 100% { background-color: #f44336; }
-      50% { background-color: #fff; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Тест по дизайну</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            transition: background-color 0.5s;
+        }
+        .question {
+            margin-top: 50px;
+            font-size: 24px;
+        }
+        .answers {
+            margin-top: 20px;
+        }
+        .answer-button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: lightgray;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            width: 300px;
+        }
+        .correct {
+            background-color: lightgreen !important;
+        }
+        .incorrect {
+            background-color: lightcoral !important;
+        }
+        .score {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #timer {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        .celebration {
+            font-size: 40px;
+            color: gold;
+            margin-top: 30px;
+            animation: fireworks 2s infinite;
+        }
+        @keyframes fireworks {
+            0% { transform: scale(1); color: gold; }
+            50% { transform: scale(1.5); color: orange; }
+            100% { transform: scale(1); color: gold; }
+        }
+        .like {
+            font-size: 40px;
+            color: #00ccff;
+            margin-top: 30px;
+            animation: like 1s infinite alternate;
+        }
+        @keyframes like {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+    </style>
 </head>
 <body>
 
-<h1>Тест по Дизайну</h1>
-
-<div id="progress"></div>
-<div id="timer"></div>
-<div id="quiz"></div>
-<canvas id="fireworks"></canvas>
-
-<audio id="alarm" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+<h1>Тест на знание дизайна</h1>
+<div id="timer">Осталось: 30 сек</div>
+<div class="score">Очки: 50</div>
+<div class="question"></div>
+<div class="answers"></div>
 
 <script>
-let questions = [
-  {
-    question: "Что делает инструмент 'Трансформирование'?",
-    answers: [
-      { text: "Меняет размер и форму объекта", correct: true },
-      { text: "Размывает картинку", correct: false },
-      { text: "Удаляет слой", correct: false },
-      { text: "Перекрашивает изображение", correct: false },
-      { text: "Создаёт новый слой", correct: false },
-    ]
-  },
-  {
-    question: "Что происходит, если нажать на закрытый глаз слоя?",
-    answers: [
-      { text: "Слой становится видимым", correct: true },
-      { text: "Слой удаляется", correct: false },
-      { text: "Слой перемещается наверх", correct: false },
-      { text: "Слой блокируется", correct: false },
-      { text: "Слой становится прозрачным", correct: false },
-    ]
-  },
-  {
-    question: "Как создать новый слой?",
-    answers: [
-      { text: "Нажать на кнопку 'Создать новый слой'", correct: true },
-      { text: "Удалить все старые слои", correct: false },
-      { text: "Выбрать инструмент 'Ластик'", correct: false },
-      { text: "Открыть меню фильтров", correct: false },
-      { text: "Нажать комбинацию Ctrl+S", correct: false },
-    ]
-  },
-  {
-    question: "Как удалить часть изображения?",
-    answers: [
-      { text: "Выделить и нажать Delete", correct: true },
-      { text: "Покрасить область в белый цвет", correct: false },
-      { text: "Создать новый слой", correct: false },
-      { text: "Переместить картинку", correct: false },
-      { text: "Сохранить файл", correct: false },
-    ]
-  },
-  {
-    question: "Как переместить слой выше?",
-    answers: [
-      { text: "Перетащить его в палитре слоёв", correct: true },
-      { text: "Удалить нижний слой", correct: false },
-      { text: "Открыть фильтры", correct: false },
-      { text: "Изменить размер изображения", correct: false },
-      { text: "Поменять цвет фона", correct: false },
-    ]
-  }
+const questions = [
+    {
+        question: "Что делает скрытие слоя (иконка с глазом)?",
+        answers: [
+            "Скрывает слой из видимости",
+            "Удаляет слой",
+            "Изменяет цвет слоя",
+            "Создает новый слой",
+            "Закрывает программу"
+        ],
+        correct: 0
+    },
+    {
+        question: "Что делает трансформирование слоя?",
+        answers: [
+            "Изменяет размер, поворот",
+            "Создает дубликат",
+            "Скрывает слой",
+            "Удаляет слой",
+            "Переводит слой в текст"
+        ],
+        correct: 0
+    },
+    {
+        question: "Что обозначает иконка замка на слое?",
+        answers: [
+            "Слой заблокирован для изменений",
+            "Слой скрыт",
+            "Слой активен",
+            "Слой имеет маску",
+            "Слой выделен"
+        ],
+        correct: 0
+    },
+    {
+        question: "Как добавить новый слой?",
+        answers: [
+            "Нажать кнопку 'Создать слой'",
+            "Удалить старый слой",
+            "Скрыть все слои",
+            "Переименовать слой",
+            "Сделать дубликат слоя"
+        ],
+        correct: 0
+    },
+    {
+        question: "Что происходит при объединении слоев?",
+        answers: [
+            "Слои объединяются в один",
+            "Слои становятся прозрачными",
+            "Слои скрываются",
+            "Удаляется нижний слой",
+            "Добавляется фильтр"
+        ],
+        correct: 0
+    }
 ];
 
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
-questions = shuffle(questions);
-
 let currentQuestion = 0;
-let score = 0;
+let score = 50;
 let timer;
 let timeLeft = 30;
-let alarmPlayed = false;
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function startTimer() {
+    timeLeft = 30;
+    document.getElementById("timer").style.color = "black";
+    clearInterval(timer);
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = `Осталось: ${timeLeft} сек`;
+        if (timeLeft <= 5) {
+            document.body.style.backgroundColor = timeLeft % 2 ? "red" : "white";
+            document.getElementById("timer").style.color = "red";
+        } else if (timeLeft <= 15) {
+            document.body.style.backgroundColor = "#ffff66"; // жёлтый
+        } else {
+            document.body.style.backgroundColor = "#f0f0f0";
+        }
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            showAnswer(-1); // не выбрали ответ
+        }
+    }, 1000);
+}
 
 function showQuestion() {
-  clearInterval(timer);
-  document.body.style.animation = '';
-  alarmPlayed = false;
-  timeLeft = 30;
-  updateTimer();
+    const q = questions[currentQuestion];
+    document.querySelector(".question").innerText = q.question;
+    const answersDiv = document.querySelector(".answers");
+    answersDiv.innerHTML = "";
+    const answers = [...q.answers];
+    shuffle(answers);
 
-  const quiz = document.getElementById('quiz');
-  quiz.innerHTML = '';
-
-  if (currentQuestion >= questions.length) {
-    endQuiz();
-    return;
-  }
-
-  const q = questions[currentQuestion];
-  const questionDiv = document.createElement('div');
-  questionDiv.className = 'question';
-  questionDiv.innerHTML = `<p><strong>Вопрос:</strong> ${q.question}</p>`;
-
-  const shuffledAnswers = shuffle(q.answers.slice());
-
-  shuffledAnswers.forEach(answer => {
-    const button = document.createElement('button');
-    button.innerText = answer.text;
-    button.onclick = () => checkAnswer(button, answer.correct);
-    questionDiv.appendChild(button);
-  });
-
-  quiz.appendChild(questionDiv);
-
-  document.getElementById('progress').innerText = `Вопрос ${currentQuestion + 1} из ${questions.length}`;
-
-  timer = setInterval(() => {
-    timeLeft--;
-    updateTimer();
-    if (timeLeft <= 5 && !alarmPlayed) {
-      document.getElementById('alarm').play();
-      document.body.style.animation = 'blink 1s infinite';
-      alarmPlayed = true;
-    }
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      penalty();
-    }
-  }, 1000);
-}
-
-function updateTimer() {
-  const timerDiv = document.getElementById('timer');
-  timerDiv.innerText = `Осталось времени: ${timeLeft} сек`;
-  if (timeLeft > 20) {
-    timerDiv.style.background = "#4CAF50";
-  } else if (timeLeft > 5) {
-    timerDiv.style.background = "#FFC107";
-  } else {
-    timerDiv.style.background = "#f44336";
-  }
-}
-
-function checkAnswer(button, isCorrect) {
-  clearInterval(timer);
-  const buttons = document.querySelectorAll('button');
-  buttons.forEach(btn => btn.disabled = true);
-
-  if (isCorrect) {
-    button.classList.add('correct');
-    score += 10;
-  } else {
-    button.classList.add('wrong');
-    score -= 5;
-  }
-  setTimeout(() => {
-    currentQuestion++;
-    showQuestion();
-  }, 5000);
-}
-
-function penalty() {
-  score -= 5;
-  currentQuestion++;
-  showQuestion();
-}
-
-function endQuiz() {
-  document.getElementById('quiz').innerHTML = `<div id="result">Тест завершен!<br>Ваш результат: ${score} баллов</div>`;
-  document.getElementById('timer').style.display = "none";
-  document.getElementById('progress').style.display = "none";
-
-  if (score >= questions.length * 10 * 0.8) {
-    startFireworks();
-  } else if (score >= questions.length * 10 * 0.5) {
-    document.getElementById('result').innerHTML += "<br>👍 Хорошая работа!";
-  } else {
-    document.body.style.background = "#f44336";
-  }
-}
-
-function startFireworks() {
-  const canvas = document.getElementById('fireworks');
-  const ctx = canvas.getContext('2d');
-  resizeCanvas();
-
-  window.addEventListener('resize', resizeCanvas);
-
-  let particles = [];
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  function createParticle(x, y) {
-    const particle = {
-      x,
-      y,
-      speed: Math.random() * 5 + 2,
-      angle: Math.random() * 2 * Math.PI,
-      radius: Math.random() * 3 + 2,
-      alpha: 1,
-      color: `hsl(${Math.random() * 360}, 100%, 50%)`
-    };
-    particles.push(particle);
-  }
-
-  function updateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.x += Math.cos(p.angle) * p.speed;
-      p.y += Math.sin(p.angle) * p.speed;
-      p.alpha -= 0.01;
+    answers.forEach((answer, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "answer-button";
+        btn.innerText = answer;
+        btn.onclick = () => checkAnswer(q.answers.indexOf(answer));
+        answersDiv.appendChild(btn);
     });
-    particles = particles.filter(p => p.alpha > 0);
-  }
 
-  function drawParticles() {
-    particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = p.alpha;
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-  }
-
-  function loop() {
-    updateParticles();
-    drawParticles();
-    requestAnimationFrame(loop);
-  }
-
-  setInterval(() => {
-    const x = Math.random() * canvas.width;
-    const y = Math.random() * canvas.height / 2;
-    for (let i = 0; i < 30; i++) {
-      createParticle(x, y);
-    }
-  }, 500);
-
-  loop();
+    startTimer();
 }
 
+function checkAnswer(selectedIndex) {
+    const correctIndex = questions[currentQuestion].correct;
+    const buttons = document.querySelectorAll(".answer-button");
+    buttons.forEach(b => b.disabled = true);
+
+    if (selectedIndex === correctIndex) {
+        score += 10;
+        buttons[selectedIndex].classList.add("correct");
+    } else {
+        score -= 5;
+        if (selectedIndex >= 0) buttons[selectedIndex].classList.add("incorrect");
+        buttons[correctIndex].classList.add("correct");
+    }
+    document.querySelector(".score").innerText = `Очки: ${score}`;
+
+    clearInterval(timer);
+    setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion >= questions.length) {
+            endTest();
+        } else {
+            showQuestion();
+        }
+    }, 5000);
+}
+
+function showAnswer(selectedIndex) {
+    if (selectedIndex === -1) {
+        score -= 5;
+        document.querySelector(".score").innerText = `Очки: ${score}`;
+    }
+    const correctIndex = questions[currentQuestion].correct;
+    const buttons = document.querySelectorAll(".answer-button");
+    buttons.forEach(b => b.disabled = true);
+    if (correctIndex >= 0) buttons[correctIndex].classList.add("correct");
+
+    clearInterval(timer);
+    setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion >= questions.length) {
+            endTest();
+        } else {
+            showQuestion();
+        }
+    }, 5000);
+}
+
+function endTest() {
+    document.querySelector(".question").innerText = "Тест окончен!";
+    document.querySelector(".answers").innerHTML = "";
+    document.getElementById("timer").innerText = "";
+
+    if (score === 50) {
+        document.body.innerHTML += `<div class="celebration">Поздравляем! Салют!</div>`;
+    } else if (score >= 45) {
+        document.body.innerHTML += `<div class="like">Отлично! Лайк!</div>`;
+    } else if (score >= 20) {
+        document.body.style.backgroundColor = "linear-gradient(to right, red, blue)";
+    } else {
+        document.body.style.backgroundColor = "red";
+    }
+}
+
+shuffle(questions);
 showQuestion();
 </script>
 
