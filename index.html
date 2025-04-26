@@ -1,70 +1,70 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Тест по дизайну</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-            transition: background-color 0.5s;
-        }
-        .question {
-            margin-top: 50px;
-            font-size: 24px;
-        }
-        .answers {
-            margin-top: 20px;
-        }
-        .answer-button {
-            display: block;
-            margin: 10px auto;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            background-color: lightgray;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            width: 300px;
-        }
-        .correct {
-            background-color: lightgreen !important;
-        }
-        .incorrect {
-            background-color: lightcoral !important;
-        }
-        .score {
-            margin-top: 20px;
-            font-size: 20px;
-        }
-        #timer {
-            font-size: 20px;
-            margin-top: 10px;
-        }
-        .celebration {
-            font-size: 40px;
-            color: gold;
-            margin-top: 30px;
-            animation: fireworks 2s infinite;
-        }
-        @keyframes fireworks {
-            0% { transform: scale(1); color: gold; }
-            50% { transform: scale(1.5); color: orange; }
-            100% { transform: scale(1); color: gold; }
-        }
-        .like {
-            font-size: 40px;
-            color: #00ccff;
-            margin-top: 30px;
-            animation: like 1s infinite alternate;
-        }
-        @keyframes like {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.2); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Тест по дизайну</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      transition: background-color 0.5s;
+    }
+    .question {
+      margin-top: 50px;
+      font-size: 24px;
+    }
+    .answers {
+      margin-top: 20px;
+    }
+    .answer-button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      background-color: lightgray;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      width: 300px;
+    }
+    .correct {
+      background-color: lightgreen !important;
+    }
+    .incorrect {
+      background-color: lightcoral !important;
+    }
+    .score {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+    #timer {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+    .celebration {
+      font-size: 40px;
+      color: gold;
+      margin-top: 30px;
+      animation: fireworks 2s infinite;
+    }
+    @keyframes fireworks {
+      0% { transform: scale(1); color: gold; }
+      50% { transform: scale(1.5); color: orange; }
+      100% { transform: scale(1); color: gold; }
+    }
+    .like {
+      font-size: 40px;
+      color: #00ccff;
+      margin-top: 30px;
+      animation: like 1s infinite alternate;
+    }
+    @keyframes like {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.2); }
+    }
+  </style>
 </head>
 <body>
 
@@ -76,61 +76,56 @@
 
 <script>
 const questions = [
-    {
-        question: "Что делает скрытие слоя (иконка с глазом)?",
-        answers: [
-            "Скрывает слой из видимости",
-            "Удаляет слой",
-            "Изменяет цвет слоя",
-            "Создает новый слой",
-            "Закрывает программу"
-        ],
-        correct: 0
-    },
-    {
-        question: "Что делает трансформирование слоя?",
-        answers: [
-            "Изменяет размер, поворот",
-            "Создает дубликат",
-            "Скрывает слой",
-            "Удаляет слой",
-            "Переводит слой в текст"
-        ],
-        correct: 0
-    },
-    {
-        question: "Что обозначает иконка замка на слое?",
-        answers: [
-            "Слой заблокирован для изменений",
-            "Слой скрыт",
-            "Слой активен",
-            "Слой имеет маску",
-            "Слой выделен"
-        ],
-        correct: 0
-    },
-    {
-        question: "Как добавить новый слой?",
-        answers: [
-            "Нажать кнопку 'Создать слой'",
-            "Удалить старый слой",
-            "Скрыть все слои",
-            "Переименовать слой",
-            "Сделать дубликат слоя"
-        ],
-        correct: 0
-    },
-    {
-        question: "Что происходит при объединении слоев?",
-        answers: [
-            "Слои объединяются в один",
-            "Слои становятся прозрачными",
-            "Слои скрываются",
-            "Удаляется нижний слой",
-            "Добавляется фильтр"
-        ],
-        correct: 0
-    }
+  {
+    question: "Что делает скрытие слоя (иконка с глазом)?",
+    answers: [
+      { text: "Скрывает слой из видимости", correct: true },
+      { text: "Удаляет слой", correct: false },
+      { text: "Изменяет цвет слоя", correct: false },
+      { text: "Создает новый слой", correct: false },
+      { text: "Закрывает программу", correct: false }
+    ]
+  },
+  {
+    question: "Что делает трансформирование слоя?",
+    answers: [
+      { text: "Изменяет размер, поворот", correct: true },
+      { text: "Создает дубликат", correct: false },
+      { text: "Скрывает слой", correct: false },
+      { text: "Удаляет слой", correct: false },
+      { text: "Переводит слой в текст", correct: false }
+    ]
+  },
+  {
+    question: "Что обозначает иконка замка на слое?",
+    answers: [
+      { text: "Слой заблокирован для изменений", correct: true },
+      { text: "Слой скрыт", correct: false },
+      { text: "Слой активен", correct: false },
+      { text: "Слой имеет маску", correct: false },
+      { text: "Слой выделен", correct: false }
+    ]
+  },
+  {
+    question: "Как добавить новый слой?",
+    answers: [
+      { text: "Нажать кнопку 'Создать слой'", correct: true },
+      { text: "Удалить старый слой", correct: false },
+      { text: "Скрыть все слои", correct: false },
+      { text: "Переименовать слой", correct: false },
+      { text: "Сделать дубликат слоя", correct: false }
+    ]
+  },
+  {
+    question: "Что происходит при объединении слоев?",
+    answers: [
+      { text: "Слои объединяются в один", correct: true },
+      { text: "Слои становятся прозрачными", correct: false },
+      { text: "Слои скрываются", correct: false },
+      { text: "Удаляется нижний слой", correct: false },
+      { text: "Добавляется фильтр", correct: false }
+    ]
+  }
 ];
 
 let currentQuestion = 0;
@@ -139,117 +134,117 @@ let timer;
 let timeLeft = 30;
 
 function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
 
 function startTimer() {
-    timeLeft = 30;
-    document.getElementById("timer").style.color = "black";
-    clearInterval(timer);
-    timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById("timer").innerText = `Осталось: ${timeLeft} сек`;
-        if (timeLeft <= 5) {
-            document.body.style.backgroundColor = timeLeft % 2 ? "red" : "white";
-            document.getElementById("timer").style.color = "red";
-        } else if (timeLeft <= 15) {
-            document.body.style.backgroundColor = "#ffff66"; // жёлтый
-        } else {
-            document.body.style.backgroundColor = "#f0f0f0";
-        }
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            showAnswer(-1); // если время вышло
-        }
-    }, 1000);
+  timeLeft = 30;
+  document.getElementById("timer").style.color = "black";
+  clearInterval(timer);
+  timer = setInterval(() => {
+    timeLeft--;
+    document.getElementById("timer").innerText = `Осталось: ${timeLeft} сек`;
+    if (timeLeft <= 5) {
+      document.body.style.backgroundColor = timeLeft % 2 ? "red" : "white";
+      document.getElementById("timer").style.color = "red";
+    } else if (timeLeft <= 15) {
+      document.body.style.backgroundColor = "#ffff66"; // желтый
+    } else {
+      document.body.style.backgroundColor = "#f0f0f0";
+    }
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      showAnswer(-1); // если время вышло
+    }
+  }, 1000);
 }
 
 function showQuestion() {
-    const q = questions[currentQuestion];
-    document.querySelector(".question").innerText = q.question;
-    const answersDiv = document.querySelector(".answers");
-    answersDiv.innerHTML = "";
-    const answers = [...q.answers];
-    shuffle(answers);
+  const q = questions[currentQuestion];
+  document.querySelector(".question").innerText = q.question;
+  const answersDiv = document.querySelector(".answers");
+  answersDiv.innerHTML = "";
 
-    answers.forEach((answer) => {
-        const btn = document.createElement("button");
-        btn.className = "answer-button";
-        btn.innerText = answer;
-        btn.onclick = () => checkAnswer(q.answers.indexOf(answer));
-        answersDiv.appendChild(btn);
-    });
+  let shuffledAnswers = [...q.answers];
+  shuffle(shuffledAnswers);
 
-    startTimer();
+  shuffledAnswers.forEach((ans) => {
+    const btn = document.createElement("button");
+    btn.className = "answer-button";
+    btn.innerText = ans.text;
+    btn.onclick = () => checkAnswer(ans.correct, btn);
+    answersDiv.appendChild(btn);
+  });
+
+  startTimer();
 }
 
-function checkAnswer(selectedIndex) {
-    const correctIndex = questions[currentQuestion].correct;
-    const buttons = document.querySelectorAll(".answer-button");
-    buttons.forEach(b => b.disabled = true);
+function checkAnswer(isCorrect, button) {
+  const buttons = document.querySelectorAll(".answer-button");
+  buttons.forEach(b => b.disabled = true);
 
-    if (selectedIndex === correctIndex) {
-        score += 10;
-        buttons[selectedIndex].classList.add("correct");
+  if (isCorrect) {
+    score += 10;
+    button.classList.add("correct");
+  } else {
+    score -= 5;
+    button.classList.add("incorrect");
+    const correctButton = Array.from(buttons).find(b => b.innerText === questions[currentQuestion].answers.find(a => a.correct).text);
+    if (correctButton) correctButton.classList.add("correct");
+  }
+
+  document.querySelector(".score").innerText = `Очки: ${score}`;
+
+  clearInterval(timer);
+  setTimeout(() => {
+    currentQuestion++;
+    if (currentQuestion >= questions.length) {
+      endTest();
     } else {
-        score -= 5;
-        if (selectedIndex >= 0) buttons[selectedIndex].classList.add("incorrect");
-        buttons[correctIndex].classList.add("correct");
+      showQuestion();
     }
-    document.querySelector(".score").innerText = `Очки: ${score}`;
-
-    clearInterval(timer);
-    setTimeout(() => {
-        currentQuestion++;
-        if (currentQuestion >= questions.length) {
-            endTest();
-        } else {
-            showQuestion();
-        }
-    }, 5000);
+  }, 5000);
 }
 
 function showAnswer(selectedIndex) {
-    if (selectedIndex === -1) {
-        score -= 5;
-        document.querySelector(".score").innerText = `Очки: ${score}`;
-    }
-    const correctIndex = questions[currentQuestion].correct;
-    const buttons = document.querySelectorAll(".answer-button");
-    buttons.forEach(b => b.disabled = true);
-    if (correctIndex >= 0) buttons[correctIndex].classList.add("correct");
+  const buttons = document.querySelectorAll(".answer-button");
+  buttons.forEach(b => b.disabled = true);
+  const correctButton = Array.from(buttons).find(b => b.innerText === questions[currentQuestion].answers.find(a => a.correct).text);
+  if (correctButton) correctButton.classList.add("correct");
 
-    clearInterval(timer);
-    setTimeout(() => {
-        currentQuestion++;
-        if (currentQuestion >= questions.length) {
-            endTest();
-        } else {
-            showQuestion();
-        }
-    }, 5000);
+  score -= 5;
+  document.querySelector(".score").innerText = `Очки: ${score}`;
+
+  clearInterval(timer);
+  setTimeout(() => {
+    currentQuestion++;
+    if (currentQuestion >= questions.length) {
+      endTest();
+    } else {
+      showQuestion();
+    }
+  }, 5000);
 }
 
 function endTest() {
-    document.querySelector(".question").innerText = "Тест окончен!";
-    document.querySelector(".answers").innerHTML = "";
-    document.getElementById("timer").innerText = "";
+  document.querySelector(".question").innerText = "Тест окончен!";
+  document.querySelector(".answers").innerHTML = "";
+  document.getElementById("timer").innerText = "";
 
-    if (score === 50) {
-        document.body.innerHTML += `<div class="celebration">Поздравляем! Салют!</div>`;
-    } else if (score >= 45) {
-        document.body.innerHTML += `<div class="like">Отлично! Лайк!</div>`;
-    } else if (score >= 20) {
-        document.body.style.background = "linear-gradient(to right, red, blue)";
-    } else {
-        document.body.style.backgroundColor = "red";
-    }
+  if (score === 50) {
+    document.body.innerHTML += `<div class="celebration">Поздравляем! Салют!</div>`;
+  } else if (score >= 45) {
+    document.body.innerHTML += `<div class="like">Отлично! Лайк!</div>`;
+  } else if (score >= 20) {
+    document.body.style.background = "linear-gradient(to right, red, blue)";
+  } else {
+    document.body.style.backgroundColor = "red";
+  }
 }
 
-shuffle(questions);
 showQuestion();
 </script>
 
