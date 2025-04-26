@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Тест по Дизайну</title>
+  <title>Тест по Дизайну с Таймером</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -10,30 +10,20 @@
       padding: 20px;
       max-width: 600px;
       margin: auto;
-      animation: fadeIn 1s ease-in;
       position: relative;
       overflow: hidden;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
     .question {
-      background: #ffffff;
+      background: #fff;
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       margin-bottom: 20px;
-      animation: slideIn 0.5s ease-out;
-    }
-    @keyframes slideIn {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      animation: fadeIn 0.5s;
     }
     button {
       display: block;
       background: #ddd;
-      color: #000;
       border: none;
       padding: 12px 20px;
       margin: 10px 0;
@@ -41,23 +31,22 @@
       font-size: 16px;
       cursor: pointer;
       width: 100%;
-      transition: background-color 0.4s, transform 0.2s;
+      transition: background-color 0.3s, transform 0.2s;
     }
     button:hover {
       background: #ccc;
-      transform: scale(1.02);
     }
     button.correct {
-      background: #4CAF50 !important; /* зелёный */
+      background: #4CAF50 !important;
       color: white;
-      animation: correctPulse 1s infinite;
+      animation: pulse 1s infinite;
     }
     button.wrong {
-      background: #f44336 !important; /* красный */
+      background: #f44336 !important;
       color: white;
       animation: shake 0.5s;
     }
-    @keyframes correctPulse {
+    @keyframes pulse {
       0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
       70% { box-shadow: 0 0 10px 20px rgba(76, 175, 80, 0); }
       100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
@@ -68,6 +57,12 @@
       50% { transform: translateX(5px); }
       75% { transform: translateX(-5px); }
       100% { transform: translateX(0); }
+    }
+    #timer {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
     }
     #result {
       text-align: center;
@@ -89,13 +84,12 @@
 
 <h1>Тест по Дизайну</h1>
 
+<div id="timer"></div>
+<div id="quiz"></div>
 <canvas id="fireworks"></canvas>
 
-<div id="quiz"></div>
-
 <script>
-// Вопросы и ответы
-const questions = [
+let questions = [
   {
     question: "Что делает инструмент 'Трансформирование'?",
     answers: [
@@ -148,19 +142,29 @@ const questions = [
   }
 ];
 
-let currentQuestion = 0;
-
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
 
+questions = shuffle(questions);
+
+let currentQuestion = 0;
+let score = 0;
+let timer;
+let timeLeft = 20;
+
 function showQuestion() {
+  clearInterval(timer);
+  timeLeft = 20;
+  updateTimer();
+
   const quiz = document.getElementById('quiz');
   quiz.innerHTML = '';
 
   if (currentQuestion >= questions.length) {
-    quiz.innerHTML = '<div id="result">🎉 Поздравляем! Вы прошли тест! 🎉</div>';
+    quiz.innerHTML = `<div id="result">🎉 Поздравляем! Вы набрали ${score} очков! 🎉</div>`;
     startFireworks();
+    document.getElementById('timer').style.display = "none";
     return;
   }
 
@@ -179,27 +183,50 @@ function showQuestion() {
   });
 
   quiz.appendChild(questionDiv);
+
+  timer = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      penalty();
+    }
+  }, 1000);
 }
 
 function checkAnswer(button, isCorrect) {
+  clearInterval(timer);
   const buttons = document.querySelectorAll('button');
   buttons.forEach(btn => btn.disabled = true);
 
   if (isCorrect) {
     button.classList.add('correct');
+    score += 10;
     setTimeout(() => {
       currentQuestion++;
       showQuestion();
     }, 5000);
   } else {
     button.classList.add('wrong');
+    score -= 5;
     setTimeout(() => {
-      buttons.forEach(btn => btn.disabled = false);
-    }, 1000);
+      currentQuestion++;
+      showQuestion();
+    }, 2000);
   }
 }
 
-// Fireworks анимация
+function penalty() {
+  score -= 5;
+  currentQuestion++;
+  showQuestion();
+}
+
+function updateTimer() {
+  document.getElementById('timer').innerText = `Осталось времени: ${timeLeft} секунд`;
+}
+
+// Функция фейерверков
 function startFireworks() {
   const canvas = document.getElementById('fireworks');
   const ctx = canvas.getContext('2d');
