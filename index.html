@@ -1,108 +1,140 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Пошаговый тест по дизайну</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; max-width: 600px; margin: auto; }
-        .question { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        button { background: #4CAF50; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
-        #result { font-size: 18px; text-align: center; margin-top: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Тест по Дизайну</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .question {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+    button {
+      display: block;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    #result {
+      text-align: center;
+      font-size: 22px;
+      margin-top: 20px;
+      color: green;
+    }
+  </style>
 </head>
 <body>
 
-<h1>Тест по дизайну</h1>
+<h1>Тест по Дизайну</h1>
 
 <div id="quiz"></div>
 
 <script>
 const questions = [
-    {
-        question: "Что делает инструмент 'Трансформирование'?",
-        answers: [
-            { text: "Меняет размер и положение объекта", correct: true },
-            { text: "Стирает часть изображения", correct: false },
-            { text: "Создаёт новый слой", correct: false },
-            { text: "Размывает края", correct: false },
-            { text: "Делает копию слоя", correct: false },
-        ]
-    },
-    {
-        question: "Что означает иконка с закрытым глазом на слое?",
-        answers: [
-            { text: "Слой скрыт", correct: true },
-            { text: "Слой закреплён", correct: false },
-            { text: "Слой удалён", correct: false },
-            { text: "Слой прозрачный", correct: false },
-            { text: "Слой редактируемый", correct: false },
-        ]
-    },
-    {
-        question: "Что происходит при открытии глаза на слое?",
-        answers: [
-            { text: "Слой становится видимым", correct: true },
-            { text: "Слой блокируется", correct: false },
-            { text: "Слой удаляется", correct: false },
-            { text: "Слой меняет цвет", correct: false },
-            { text: "Слой перемещается вверх", correct: false },
-        ]
-    },
-    {
-        question: "Как создать новый пустой слой?",
-        answers: [
-            { text: "Нажать кнопку 'Создать слой'", correct: true },
-            { text: "Выбрать инструмент трансформации", correct: false },
-            { text: "Удалить старый слой", correct: false },
-            { text: "Переместить существующий слой", correct: false },
-            { text: "Использовать инструмент 'Кисть'", correct: false },
-        ]
-    },
-    {
-        question: "Что делает инструмент 'Перемещение'?",
-        answers: [
-            { text: "Перемещает выделенные объекты", correct: true },
-            { text: "Обрезает изображение", correct: false },
-            { text: "Меняет цвет объекта", correct: false },
-            { text: "Удаляет слой", correct: false },
-            { text: "Добавляет текст", correct: false },
-        ]
-    }
+  {
+    question: "Что делает инструмент 'Трансформирование'?",
+    answers: [
+      { text: "Меняет размер и форму объекта", correct: true },
+      { text: "Размывает картинку", correct: false },
+      { text: "Удаляет слой", correct: false },
+      { text: "Перекрашивает изображение", correct: false },
+      { text: "Создаёт новый слой", correct: false },
+    ]
+  },
+  {
+    question: "Что происходит, если нажать на закрытый глаз слоя?",
+    answers: [
+      { text: "Слой становится видимым", correct: true },
+      { text: "Слой удаляется", correct: false },
+      { text: "Слой перемещается наверх", correct: false },
+      { text: "Слой заблокируется", correct: false },
+      { text: "Слой становится прозрачным", correct: false },
+    ]
+  },
+  {
+    question: "Как создать новый слой в фотошопе?",
+    answers: [
+      { text: "Нажать на кнопку 'Создать новый слой'", correct: true },
+      { text: "Удалить все старые слои", correct: false },
+      { text: "Выбрать инструмент 'Ластик'", correct: false },
+      { text: "Открыть меню фильтров", correct: false },
+      { text: "Нажать комбинацию Ctrl+S", correct: false },
+    ]
+  },
+  {
+    question: "Как удалить ненужную часть изображения?",
+    answers: [
+      { text: "Выделить и нажать Delete", correct: true },
+      { text: "Покрасить область в белый цвет", correct: false },
+      { text: "Создать новый слой", correct: false },
+      { text: "Переместить картинку", correct: false },
+      { text: "Сохранить файл", correct: false },
+    ]
+  },
+  {
+    question: "Как переместить слой выше другого слоя?",
+    answers: [
+      { text: "Перетащить его в палитре слоёв", correct: true },
+      { text: "Удалить нижний слой", correct: false },
+      { text: "Открыть фильтры", correct: false },
+      { text: "Изменить размер изображения", correct: false },
+      { text: "Поменять цвет фона", correct: false },
+    ]
+  }
 ];
 
 let currentQuestion = 0;
 
 function showQuestion() {
-    const quiz = document.getElementById('quiz');
-    quiz.innerHTML = '';
+  const quiz = document.getElementById('quiz');
+  quiz.innerHTML = '';
 
-    const q = questions[currentQuestion];
+  if (currentQuestion >= questions.length) {
+    quiz.innerHTML = '<div id="result">Поздравляем! Вы прошли тест!</div>';
+    return;
+  }
 
-    const questionDiv = document.createElement('div');
-    questionDiv.className = 'question';
-    questionDiv.innerHTML = `<p>${q.question}</p>`;
+  const q = questions[currentQuestion];
 
-    q.answers.forEach(answer => {
-        const btn = document.createElement('button');
-        btn.innerText = answer.text;
-        btn.onclick = () => handleAnswer(answer.correct);
-        questionDiv.appendChild(btn);
-    });
+  const questionDiv = document.createElement('div');
+  questionDiv.className = 'question';
+  questionDiv.innerHTML = `<p><strong>Вопрос ${currentQuestion + 1}:</strong> ${q.question}</p>`;
 
-    quiz.appendChild(questionDiv);
+  q.answers.forEach(answer => {
+    const button = document.createElement('button');
+    button.innerText = answer.text;
+    button.onclick = () => checkAnswer(answer.correct);
+    questionDiv.appendChild(button);
+  });
+
+  quiz.appendChild(questionDiv);
 }
 
-function handleAnswer(isCorrect) {
-    if (isCorrect) {
-        currentQuestion++;
-        if (currentQuestion < questions.length) {
-            showQuestion();
-        } else {
-            document.getElementById('quiz').innerHTML = '<h2>Поздравляем! Вы прошли тест!</h2>';
-        }
-    } else {
-        alert("Неправильный ответ! Попробуйте снова.");
-    }
+function checkAnswer(isCorrect) {
+  if (isCorrect) {
+    currentQuestion++;
+    showQuestion();
+  } else {
+    alert('Неправильный ответ! Попробуйте снова.');
+  }
 }
 
 showQuestion();
