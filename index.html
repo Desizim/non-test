@@ -2,124 +2,110 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Тест по дизайну</title>
+    <title>Пошаговый тест по дизайну</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .question {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .answers label {
-            display: block;
-            margin-top: 8px;
-        }
-        button {
-            background: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #result {
-            font-size: 18px;
-            margin-top: 20px;
-            text-align: center;
-        }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; max-width: 600px; margin: auto; }
+        .question { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        button { background: #4CAF50; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        #result { font-size: 18px; text-align: center; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <h1>Тест по дизайну</h1>
 
-<form id="quizForm">
-
-<div class="question">
-    <p>1. Что делает инструмент "Трансформирование"?</p>
-    <div class="answers">
-        <label><input type="radio" name="q1" value="wrong"> Стирает часть изображения</label>
-        <label><input type="radio" name="q1" value="wrong"> Создаёт новый слой</label>
-        <label><input type="radio" name="q1" value="wrong"> Делает копию слоя</label>
-        <label><input type="radio" name="q1" value="correct"> Меняет размер и положение объекта</label>
-        <label><input type="radio" name="q1" value="wrong"> Размывает края</label>
-    </div>
-</div>
-
-<div class="question">
-    <p>2. Что означает иконка с закрытым глазом на слое?</p>
-    <div class="answers">
-        <label><input type="radio" name="q2" value="correct"> Слой скрыт</label>
-        <label><input type="radio" name="q2" value="wrong"> Слой закреплён</label>
-        <label><input type="radio" name="q2" value="wrong"> Слой удалён</label>
-        <label><input type="radio" name="q2" value="wrong"> Слой прозрачный</label>
-        <label><input type="radio" name="q2" value="wrong"> Слой редактируемый</label>
-    </div>
-</div>
-
-<div class="question">
-    <p>3. Что происходит при открытии глаза на слое?</p>
-    <div class="answers">
-        <label><input type="radio" name="q3" value="correct"> Слой становится видимым</label>
-        <label><input type="radio" name="q3" value="wrong"> Слой блокируется</label>
-        <label><input type="radio" name="q3" value="wrong"> Слой удаляется</label>
-        <label><input type="radio" name="q3" value="wrong"> Слой меняет цвет</label>
-        <label><input type="radio" name="q3" value="wrong"> Слой перемещается вверх</label>
-    </div>
-</div>
-
-<div class="question">
-    <p>4. Как создать новый пустой слой?</p>
-    <div class="answers">
-        <label><input type="radio" name="q4" value="wrong"> Выбрать инструмент трансформации</label>
-        <label><input type="radio" name="q4" value="wrong"> Удалить старый слой</label>
-        <label><input type="radio" name="q4" value="wrong"> Переместить существующий слой</label>
-        <label><input type="radio" name="q4" value="correct"> Нажать кнопку "Создать слой"</label>
-        <label><input type="radio" name="q4" value="wrong"> Использовать инструмент "Кисть"</label>
-    </div>
-</div>
-
-<div class="question">
-    <p>5. Что делает инструмент "Перемещение"?</p>
-    <div class="answers">
-        <label><input type="radio" name="q5" value="correct"> Перемещает выделенные объекты</label>
-        <label><input type="radio" name="q5" value="wrong"> Меняет цвет объекта</label>
-        <label><input type="radio" name="q5" value="wrong"> Обрезает изображение</label>
-        <label><input type="radio" name="q5" value="wrong"> Удаляет слой</label>
-        <label><input type="radio" name="q5" value="wrong"> Добавляет текст</label>
-    </div>
-</div>
-
-<button type="button" onclick="checkAnswers()">Проверить ответы</button>
-
-</form>
-
-<p id="result"></p>
+<div id="quiz"></div>
 
 <script>
-function checkAnswers() {
-    var correct = 0;
-    for (var i = 1; i <= 5; i++) {
-        var answer = document.querySelector('input[name="q' + i + '"]:checked');
-        if (answer && answer.value === "correct") {
-            correct++;
-        }
+const questions = [
+    {
+        question: "Что делает инструмент 'Трансформирование'?",
+        answers: [
+            { text: "Меняет размер и положение объекта", correct: true },
+            { text: "Стирает часть изображения", correct: false },
+            { text: "Создаёт новый слой", correct: false },
+            { text: "Размывает края", correct: false },
+            { text: "Делает копию слоя", correct: false },
+        ]
+    },
+    {
+        question: "Что означает иконка с закрытым глазом на слое?",
+        answers: [
+            { text: "Слой скрыт", correct: true },
+            { text: "Слой закреплён", correct: false },
+            { text: "Слой удалён", correct: false },
+            { text: "Слой прозрачный", correct: false },
+            { text: "Слой редактируемый", correct: false },
+        ]
+    },
+    {
+        question: "Что происходит при открытии глаза на слое?",
+        answers: [
+            { text: "Слой становится видимым", correct: true },
+            { text: "Слой блокируется", correct: false },
+            { text: "Слой удаляется", correct: false },
+            { text: "Слой меняет цвет", correct: false },
+            { text: "Слой перемещается вверх", correct: false },
+        ]
+    },
+    {
+        question: "Как создать новый пустой слой?",
+        answers: [
+            { text: "Нажать кнопку 'Создать слой'", correct: true },
+            { text: "Выбрать инструмент трансформации", correct: false },
+            { text: "Удалить старый слой", correct: false },
+            { text: "Переместить существующий слой", correct: false },
+            { text: "Использовать инструмент 'Кисть'", correct: false },
+        ]
+    },
+    {
+        question: "Что делает инструмент 'Перемещение'?",
+        answers: [
+            { text: "Перемещает выделенные объекты", correct: true },
+            { text: "Обрезает изображение", correct: false },
+            { text: "Меняет цвет объекта", correct: false },
+            { text: "Удаляет слой", correct: false },
+            { text: "Добавляет текст", correct: false },
+        ]
     }
-    document.getElementById('result').innerText = "Вы ответили правильно на " + correct + " из 5 вопросов.";
+];
+
+let currentQuestion = 0;
+
+function showQuestion() {
+    const quiz = document.getElementById('quiz');
+    quiz.innerHTML = '';
+
+    const q = questions[currentQuestion];
+
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question';
+    questionDiv.innerHTML = `<p>${q.question}</p>`;
+
+    q.answers.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.innerText = answer.text;
+        btn.onclick = () => handleAnswer(answer.correct);
+        questionDiv.appendChild(btn);
+    });
+
+    quiz.appendChild(questionDiv);
 }
+
+function handleAnswer(isCorrect) {
+    if (isCorrect) {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            document.getElementById('quiz').innerHTML = '<h2>Поздравляем! Вы прошли тест!</h2>';
+        }
+    } else {
+        alert("Неправильный ответ! Попробуйте снова.");
+    }
+}
+
+showQuestion();
 </script>
 
 </body>
