@@ -162,7 +162,7 @@ function startTimer() {
         }
         if (timeLeft <= 0) {
             clearInterval(timer);
-            showAnswer(-1); // не выбрали ответ
+            showAnswer(-1); // если время вышло
         }
     }, 1000);
 }
@@ -175,7 +175,7 @@ function showQuestion() {
     const answers = [...q.answers];
     shuffle(answers);
 
-    answers.forEach((answer, idx) => {
+    answers.forEach((answer) => {
         const btn = document.createElement("button");
         btn.className = "answer-button";
         btn.innerText = answer;
@@ -243,7 +243,7 @@ function endTest() {
     } else if (score >= 45) {
         document.body.innerHTML += `<div class="like">Отлично! Лайк!</div>`;
     } else if (score >= 20) {
-        document.body.style.backgroundColor = "linear-gradient(to right, red, blue)";
+        document.body.style.background = "linear-gradient(to right, red, blue)";
     } else {
         document.body.style.backgroundColor = "red";
     }
