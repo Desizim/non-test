@@ -20,8 +20,8 @@
     }
     button {
       display: block;
-      background: #4CAF50;
-      color: white;
+      background: #ccc; /* изначально серый */
+      color: #000;
       border: none;
       padding: 10px 20px;
       margin: 10px 0;
@@ -29,9 +29,15 @@
       font-size: 16px;
       cursor: pointer;
       width: 100%;
+      transition: background 0.3s;
     }
-    button:hover {
-      background: #45a049;
+    button.correct {
+      background: #4CAF50 !important; /* зелёный */
+      color: white;
+    }
+    button.wrong {
+      background: #f44336 !important; /* красный */
+      color: white;
     }
     #result {
       text-align: center;
@@ -121,19 +127,28 @@ function showQuestion() {
   q.answers.forEach(answer => {
     const button = document.createElement('button');
     button.innerText = answer.text;
-    button.onclick = () => checkAnswer(answer.correct);
+    button.onclick = () => checkAnswer(button, answer.correct);
     questionDiv.appendChild(button);
   });
 
   quiz.appendChild(questionDiv);
 }
 
-function checkAnswer(isCorrect) {
+function checkAnswer(button, isCorrect) {
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach(btn => btn.disabled = true); // блокировать все кнопки после ответа
+
   if (isCorrect) {
-    currentQuestion++;
-    showQuestion();
+    button.classList.add('correct');
+    setTimeout(() => {
+      currentQuestion++;
+      showQuestion();
+    }, 5000); // ждать 5 секунд
   } else {
-    alert('Неправильный ответ! Попробуйте снова.');
+    button.classList.add('wrong');
+    setTimeout(() => {
+      buttons.forEach(btn => btn.disabled = false); // снова разрешить попытки
+    }, 500);
   }
 }
 
