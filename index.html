@@ -2,21 +2,21 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Тест по Дизайну с Таймером</title>
+  <title>Тест по Дизайну</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f0f2f5;
       padding: 20px;
-      max-width: 600px;
+      max-width: 700px;
       margin: auto;
+      transition: background 0.5s;
       position: relative;
-      overflow: hidden;
     }
     .question {
       background: #fff;
       padding: 20px;
-      border-radius: 15px;
+      border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       margin-bottom: 20px;
       animation: fadeIn 0.5s;
@@ -46,6 +46,32 @@
       color: white;
       animation: shake 0.5s;
     }
+    #timer {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    #result {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 30px;
+      color: #333;
+      animation: fadeIn 1s;
+    }
+    #progress {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
       70% { box-shadow: 0 0 10px 20px rgba(76, 175, 80, 0); }
@@ -58,25 +84,9 @@
       75% { transform: translateX(-5px); }
       100% { transform: translateX(0); }
     }
-    #timer {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #333;
-    }
-    #result {
-      text-align: center;
-      font-size: 24px;
-      margin-top: 20px;
-      color: #4CAF50;
-      animation: fadeIn 1s;
-    }
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 10;
+    @keyframes blink {
+      0%, 100% { background-color: #f44336; }
+      50% { background-color: #fff; }
     }
   </style>
 </head>
@@ -84,9 +94,12 @@
 
 <h1>Тест по Дизайну</h1>
 
+<div id="progress"></div>
 <div id="timer"></div>
 <div id="quiz"></div>
 <canvas id="fireworks"></canvas>
+
+<audio id="alarm" src="https://www.soundjay.com/button/beep-07.wav"></audio>
 
 <script>
 let questions = [
@@ -111,7 +124,7 @@ let questions = [
     ]
   },
   {
-    question: "Как создать новый слой в фотошопе?",
+    question: "Как создать новый слой?",
     answers: [
       { text: "Нажать на кнопку 'Создать новый слой'", correct: true },
       { text: "Удалить все старые слои", correct: false },
@@ -121,7 +134,7 @@ let questions = [
     ]
   },
   {
-    question: "Как удалить ненужную часть изображения?",
+    question: "Как удалить часть изображения?",
     answers: [
       { text: "Выделить и нажать Delete", correct: true },
       { text: "Покрасить область в белый цвет", correct: false },
@@ -131,7 +144,7 @@ let questions = [
     ]
   },
   {
-    question: "Как переместить слой выше другого слоя?",
+    question: "Как переместить слой выше?",
     answers: [
       { text: "Перетащить его в палитре слоёв", correct: true },
       { text: "Удалить нижний слой", correct: false },
@@ -151,27 +164,28 @@ questions = shuffle(questions);
 let currentQuestion = 0;
 let score = 0;
 let timer;
-let timeLeft = 20;
+let timeLeft = 30;
+let alarmPlayed = false;
 
 function showQuestion() {
   clearInterval(timer);
-  timeLeft = 20;
+  document.body.style.animation = '';
+  alarmPlayed = false;
+  timeLeft = 30;
   updateTimer();
 
   const quiz = document.getElementById('quiz');
   quiz.innerHTML = '';
 
   if (currentQuestion >= questions.length) {
-    quiz.innerHTML = `<div id="result">🎉 Поздравляем! Вы набрали ${score} очков! 🎉</div>`;
-    startFireworks();
-    document.getElementById('timer').style.display = "none";
+    endQuiz();
     return;
   }
 
   const q = questions[currentQuestion];
   const questionDiv = document.createElement('div');
   questionDiv.className = 'question';
-  questionDiv.innerHTML = `<p><strong>Вопрос ${currentQuestion + 1}:</strong> ${q.question}</p>`;
+  questionDiv.innerHTML = `<p><strong>Вопрос:</strong> ${q.question}</p>`;
 
   const shuffledAnswers = shuffle(q.answers.slice());
 
@@ -184,14 +198,33 @@ function showQuestion() {
 
   quiz.appendChild(questionDiv);
 
+  document.getElementById('progress').innerText = `Вопрос ${currentQuestion + 1} из ${questions.length}`;
+
   timer = setInterval(() => {
     timeLeft--;
     updateTimer();
+    if (timeLeft <= 5 && !alarmPlayed) {
+      document.getElementById('alarm').play();
+      document.body.style.animation = 'blink 1s infinite';
+      alarmPlayed = true;
+    }
     if (timeLeft <= 0) {
       clearInterval(timer);
       penalty();
     }
   }, 1000);
+}
+
+function updateTimer() {
+  const timerDiv = document.getElementById('timer');
+  timerDiv.innerText = `Осталось времени: ${timeLeft} сек`;
+  if (timeLeft > 20) {
+    timerDiv.style.background = "#4CAF50";
+  } else if (timeLeft > 5) {
+    timerDiv.style.background = "#FFC107";
+  } else {
+    timerDiv.style.background = "#f44336";
+  }
 }
 
 function checkAnswer(button, isCorrect) {
@@ -202,18 +235,14 @@ function checkAnswer(button, isCorrect) {
   if (isCorrect) {
     button.classList.add('correct');
     score += 10;
-    setTimeout(() => {
-      currentQuestion++;
-      showQuestion();
-    }, 5000);
   } else {
     button.classList.add('wrong');
     score -= 5;
-    setTimeout(() => {
-      currentQuestion++;
-      showQuestion();
-    }, 2000);
   }
+  setTimeout(() => {
+    currentQuestion++;
+    showQuestion();
+  }, 5000);
 }
 
 function penalty() {
@@ -222,11 +251,20 @@ function penalty() {
   showQuestion();
 }
 
-function updateTimer() {
-  document.getElementById('timer').innerText = `Осталось времени: ${timeLeft} секунд`;
+function endQuiz() {
+  document.getElementById('quiz').innerHTML = `<div id="result">Тест завершен!<br>Ваш результат: ${score} баллов</div>`;
+  document.getElementById('timer').style.display = "none";
+  document.getElementById('progress').style.display = "none";
+
+  if (score >= questions.length * 10 * 0.8) {
+    startFireworks();
+  } else if (score >= questions.length * 10 * 0.5) {
+    document.getElementById('result').innerHTML += "<br>👍 Хорошая работа!";
+  } else {
+    document.body.style.background = "#f44336";
+  }
 }
 
-// Функция фейерверков
 function startFireworks() {
   const canvas = document.getElementById('fireworks');
   const ctx = canvas.getContext('2d');
