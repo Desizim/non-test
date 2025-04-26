@@ -11,6 +11,8 @@
       max-width: 600px;
       margin: auto;
       animation: fadeIn 1s ease-in;
+      position: relative;
+      overflow: hidden;
     }
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -74,15 +76,25 @@
       color: #4CAF50;
       animation: fadeIn 1s;
     }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
 
 <h1>Тест по Дизайну</h1>
 
+<canvas id="fireworks"></canvas>
+
 <div id="quiz"></div>
 
 <script>
+// Вопросы и ответы
 const questions = [
   {
     question: "Что делает инструмент 'Трансформирование'?",
@@ -100,7 +112,7 @@ const questions = [
       { text: "Слой становится видимым", correct: true },
       { text: "Слой удаляется", correct: false },
       { text: "Слой перемещается наверх", correct: false },
-      { text: "Слой заблокируется", correct: false },
+      { text: "Слой блокируется", correct: false },
       { text: "Слой становится прозрачным", correct: false },
     ]
   },
@@ -138,22 +150,28 @@ const questions = [
 
 let currentQuestion = 0;
 
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
 function showQuestion() {
   const quiz = document.getElementById('quiz');
   quiz.innerHTML = '';
 
   if (currentQuestion >= questions.length) {
     quiz.innerHTML = '<div id="result">🎉 Поздравляем! Вы прошли тест! 🎉</div>';
+    startFireworks();
     return;
   }
 
   const q = questions[currentQuestion];
-
   const questionDiv = document.createElement('div');
   questionDiv.className = 'question';
   questionDiv.innerHTML = `<p><strong>Вопрос ${currentQuestion + 1}:</strong> ${q.question}</p>`;
 
-  q.answers.forEach(answer => {
+  const shuffledAnswers = shuffle(q.answers.slice());
+
+  shuffledAnswers.forEach(answer => {
     const button = document.createElement('button');
     button.innerText = answer.text;
     button.onclick = () => checkAnswer(button, answer.correct);
@@ -165,20 +183,86 @@ function showQuestion() {
 
 function checkAnswer(button, isCorrect) {
   const buttons = document.querySelectorAll('button');
-  buttons.forEach(btn => btn.disabled = true); // блокировать все кнопки после ответа
+  buttons.forEach(btn => btn.disabled = true);
 
   if (isCorrect) {
     button.classList.add('correct');
     setTimeout(() => {
       currentQuestion++;
       showQuestion();
-    }, 5000); // ждать 5 секунд
+    }, 5000);
   } else {
     button.classList.add('wrong');
     setTimeout(() => {
-      buttons.forEach(btn => btn.disabled = false); // снова разрешить попытки
+      buttons.forEach(btn => btn.disabled = false);
     }, 1000);
   }
+}
+
+// Fireworks анимация
+function startFireworks() {
+  const canvas = document.getElementById('fireworks');
+  const ctx = canvas.getContext('2d');
+  resizeCanvas();
+
+  window.addEventListener('resize', resizeCanvas);
+
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function createParticle(x, y) {
+    const particle = {
+      x,
+      y,
+      speed: Math.random() * 5 + 2,
+      angle: Math.random() * 2 * Math.PI,
+      radius: Math.random() * 3 + 2,
+      alpha: 1,
+      color: `hsl(${Math.random() * 360}, 100%, 50%)`
+    };
+    particles.push(particle);
+  }
+
+  function updateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += Math.cos(p.angle) * p.speed;
+      p.y += Math.sin(p.angle) * p.speed;
+      p.alpha -= 0.01;
+    });
+    particles = particles.filter(p => p.alpha > 0);
+  }
+
+  function drawParticles() {
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.alpha;
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function loop() {
+    updateParticles();
+    drawParticles();
+    requestAnimationFrame(loop);
+  }
+
+  setInterval(() => {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height / 2;
+    for (let i = 0; i < 30; i++) {
+      createParticle(x, y);
+    }
+  }, 500);
+
+  loop();
 }
 
 showQuestion();
